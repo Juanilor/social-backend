@@ -24,3 +24,23 @@ export const registerUser = async (
 
     return user;
 }
+
+export const loginUser = async (email: string, password: string) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new Error("El usuario no existe");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+        throw new Error("Credenciales invalidas");
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, { expiresIn: "1d" });
+
+    return { user, token }
+
+
+}
