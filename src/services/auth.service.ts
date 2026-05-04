@@ -22,7 +22,10 @@ export const registerUser = async (
         password: hashedPassword,
     });
 
-    return user;
+    const userObj = user.toObject();
+    delete userObj.password;
+
+    return userObj;
 }
 
 export const loginUser = async (email: string, password: string) => {
@@ -40,6 +43,10 @@ export const loginUser = async (email: string, password: string) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, { expiresIn: "1d" });
 
-    return { user, token }
+    const userObj = user.toObject();
+    delete userObj.password;
+
+
+    return { user: userObj, token }
 
 }
