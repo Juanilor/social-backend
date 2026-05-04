@@ -42,5 +42,4 @@ export const loginUser = async (email: string, password: string) => {
 
     return { user, token }
 
-
 }
