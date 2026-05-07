@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { timeStamp } from "node:console";
 
 export interface IPost extends Document {
 
