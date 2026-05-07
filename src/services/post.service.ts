@@ -1,4 +1,5 @@
 import Post from "../models/Post";
+import { AppError } from "../utils/AppError";
 
 export const createPost = async (content: string, userId: string) => {
 
@@ -23,7 +24,7 @@ export const toggleLike = async (postId: string, userId: string) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-        throw new Error("Post no encontrado");
+        throw new AppError("Post no encontrado", 404);
     }
 
     const alreadyLiked = post.likes.includes(userId as any);
@@ -47,11 +48,11 @@ export const deletePost = async (postId: string,userId: string) => {
     const post = await Post.findById(postId);
 
     if(!post){
-        throw new Error("Post no encontrado.");
+        throw new AppError("Post no encontrado.", 404);
     }
 
     if(post.author.toString() !== userId){
-        throw new Error("No autorizado.");
+        throw new AppError("No autorizado.", 401);
     }
 
 
