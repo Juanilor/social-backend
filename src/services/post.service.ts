@@ -40,3 +40,25 @@ export const toggleLike = async (postId: string, userId: string) => {
 
     return post;
 }
+
+
+export const deletePost = async (postId: string,userId: string) => {
+
+    const post = await Post.findById(postId);
+
+    if(!post){
+        throw new Error("Post no encontrado.");
+    }
+
+    if(post.author.toString() !== userId){
+        throw new Error("No autorizado.");
+    }
+
+
+    await post.deleteOne();
+
+    return{
+        message: "Post eliminado."
+    };      
+}
+
