@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
-import { createPost, getAllPost, toggleLike } from "../services/post.service";
+import { createPost, deletePost, getAllPost, toggleLike } from "../services/post.service";
 
 export const create = async (req: AuthRequest, res: Response) => {
     try {
@@ -39,3 +39,15 @@ export const like = async (req: AuthRequest, res: Response) => {
         res.status(400).json({message: error.message});
     }
 };
+
+export const remove = async (req: AuthRequest, res: Response) => {
+    try{
+        const {postId} = req.params;
+
+        const result = await deletePost(postId, req.user.id);
+    
+        res.json(result);
+    }catch (error: any){
+        res.status(500).json(message: error.message);
+    }
+}
