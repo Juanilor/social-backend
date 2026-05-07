@@ -7,6 +7,26 @@ import{
 
 const router = Router();
 
+/**
+ * @swagger
+ * /api/post:
+ *   post:
+ *     summary: Creacion de Post
+ *     tags:
+ *       - Post
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                  type: string
+ *     responses:
+ *       200:
+ *         description: Post creado con exito.
+ */
 router.post('/', authMiddleware, create);
 router.get('/', getAll);
 router.post('/:postId/like',authMiddleware, like);
