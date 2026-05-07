@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
-import { createPost, deletePost, getAllPost, toggleLike } from "../services/post.service";
+import { createPost, getAllPost, toggleLike, deletePost } from "../services/post.service";
 
 export const create = async (req: AuthRequest, res: Response) => {
     try {
@@ -48,6 +48,6 @@ export const remove = async (req: AuthRequest, res: Response) => {
     
         res.json(result);
     }catch (error: any){
-        res.status(500).json(message: error.message);
+        res.status(500).json({message: error.message});
     }
-}
+};
