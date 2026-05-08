@@ -10,7 +10,7 @@ export interface IPost extends Document {
     content: string;
     author: mongoose.Types.ObjectId;
     likes: mongoose.Types.ObjectId[];
-    comments: IComments;
+    comments: IComments[];
     createAt: Date;
 
 }
