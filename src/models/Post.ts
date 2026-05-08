@@ -47,9 +47,9 @@ const PostSchema = new Schema<IPost>(
                 createAt: {
                     type: Date,
                     default: Date.now,
-                }
-            }
-        ]
+                },
+            },
+        ],
     },
     { timestamps: true }
 );
