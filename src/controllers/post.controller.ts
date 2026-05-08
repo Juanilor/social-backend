@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
-import { createPost, getAllPost, toggleLike, deletePost } from "../services/post.service";
+import { createPost, getAllPost, toggleLike, deletePost, addComment } from "../services/post.service";
 
 export const create = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
@@ -10,7 +10,7 @@ export const create = async (req: AuthRequest, res: Response, next: NextFunction
 
         res.status(200).json(post);
     } catch (error) {
-        next(error);    
+        next(error);
     }
 };
 
@@ -51,3 +51,21 @@ export const remove = async (req: AuthRequest, res: Response, next: NextFunction
         next(error);
     }
 };
+
+export const comment = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+
+        const { postId } = req.params;
+        const { content } = req.body;
+
+        const post = await addComment(
+            postId,
+            req.user.id,
+            content
+        );
+
+        res.json(post);
+    } catch (error) {
+        next(error);
+    }
+}

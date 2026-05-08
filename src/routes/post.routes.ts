@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import {
+    comment,
     create, getAll, like,
     remove
 } from "../controllers/post.controller";
@@ -33,5 +34,6 @@ router.post('/', authMiddleware, create);
 router.get('/', getAll);
 router.post('/:postId/like', authMiddleware, like);
 router.delete('/:postId', authMiddleware, remove);
+router.post('/:postId/comments',authMiddleware,comment);
 
 export default router;

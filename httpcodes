@@ -1,0 +1,92 @@
+1xx — Informativos
+Código	Significado
+100	Continue → el cliente puede continuar enviando
+101	Switching Protocols → cambio de protocolo
+102	Processing
+103	Early Hints
+
+2xx — Éxito
+Código	Significado
+200	OK → petición exitosa
+201	Created → recurso creado
+202	Accepted → aceptada pero no procesada aún
+203	Non-Authoritative Information
+204	No Content → sin contenido
+205	Reset Content
+206	Partial Content
+207	Multi-Status
+208	Already Reported
+226	IM Used
+
+3xx — Redirecciones
+Código	Significado
+300	Multiple Choices
+301	Moved Permanently
+302	Found
+303	See Other
+304	Not Modified
+305	Use Proxy
+307	Temporary Redirect
+308	Permanent Redirect
+
+4xx — Errores del cliente
+Código	Significado
+400	Bad Request → petición inválida
+401	Unauthorized → no autenticado
+402	Payment Required
+403	Forbidden → prohibido
+404	Not Found → no encontrado
+405	Method Not Allowed
+406	Not Acceptable
+407	Proxy Authentication Required
+408	Request Timeout
+409	Conflict
+410	Gone
+411	Length Required
+412	Precondition Failed
+413	Payload Too Large
+414	URI Too Long
+415	Unsupported Media Type
+416	Range Not Satisfiable
+417	Expectation Failed
+418	I'm a teapot
+421	Misdirected Request
+422	Unprocessable Entity
+423	Locked
+424	Failed Dependency
+425	Too Early
+426	Upgrade Required
+428	Precondition Required
+429	Too Many Requests
+431	Request Header Fields Too Large
+451	Unavailable For Legal Reasons
+
+5xx — Errores del servidor
+Código	Significado
+500	Internal Server Error
+501	Not Implemented
+502	Bad Gateway
+503	Service Unavailable
+504	Gateway Timeout
+505	HTTP Version Not Supported
+506	Variant Also Negotiates
+507	Insufficient Storage
+508	Loop Detected
+510	Not Extended
+511	Network Authentication Required
+
+
+| Código | Uso común                      |
+| ------ | ------------------------------ |
+| 200    | Respuesta correcta             |
+| 201    | Recurso creado                 |
+| 204    | Éxito sin contenido            |
+| 400    | Datos inválidos                |
+| 401    | Falta login/token              |
+| 403    | Sin permisos                   |
+| 404    | Ruta o recurso inexistente     |
+| 409    | Conflicto de datos             |
+| 422    | Validación fallida             |
+| 429    | Muchas peticiones              |
+| 500    | Error interno del servidor     |
+| 503    | Servicio caído o mantenimiento |
