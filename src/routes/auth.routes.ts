@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import {validate} from "../middlewares/validation.middleware"
+import { validate } from "../middlewares/validation.middleware"
 
 
 import { register, login } from "../controllers/auth.controller";
@@ -36,12 +36,12 @@ const router = Router();
  */
 
 
-router.post("/register",[
+router.post("/register", [
 
     body("username").notEmpty().withMessage("Username requerido."),
     body("email").isEmail().withMessage("Email invalido."),
-    body("password").isLength({min: 6}).withMessage("Minimo 6 caracteres."),
-], validate , register);
+    body("password").isLength({ min: 6 }).withMessage("Minimo 6 caracteres."),
+], validate, register);
 
 /**
  * @swagger
@@ -69,9 +69,27 @@ router.post("/register",[
 router.post("/login", [
 
     body("email").isEmail().withMessage("Email invalido"),
-    body("password").isLength({min: 6}).withMessage("Minimo 6 caracteres.")
+    body("password").isLength({ min: 6 }).withMessage("Minimo 6 caracteres.")
 
 ], validate, login);
+
+/**
+ *  @swagger
+ * /api/auth/me
+ *  get:
+ *      summary: Optener usuario autenticado
+ *      tags:
+ *        - Auth
+ *      security:
+ *          -bearerAuth: []
+ *      response:
+ *      200:
+ *          description: Usuario autenticado
+ *      400:
+ *          description: No autorizado
+ *      
+ */
+
 router.get("/me", authMiddleware, getMe);
 
 export default router;
