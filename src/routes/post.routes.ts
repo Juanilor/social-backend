@@ -12,12 +12,12 @@ const router = Router();
  * @swagger
  * /api/posts:
  *   post:
- *     summary: Creacion de Post
- *     tags:
+ *      summary: Creacion de post
+ *      tags:
  *       - Posts
  *      security:
  *          - bearerAuth: []
- *     requestBody:
+ *      requestBody:
  *       required: true
  *       content:
  *         application/json:
@@ -28,7 +28,7 @@ const router = Router();
  *                  type: string
  *             required: 
  *               - content
- *     responses:
+ *      responses:
  *       201:
  *         description: Post creado con exito.
  */
@@ -38,10 +38,10 @@ router.post('/', authMiddleware, create);
  * @swagger
  * /api/posts:
  *   get:
- *     summary: Obtener todos los posts
- *     tags:
+ *      summary: Obtener todos los posts
+ *      tags:
  *       - Posts
- *     responses:
+ *      responses:
  *       200:
  *         description: Lista de posts
  */
@@ -51,18 +51,18 @@ router.get('/', getAll);
  * @swagger
  * /api/posts/{postId}/like:
  *   post:
- *     summary: Dar o quitar like a un post
- *     tags:
+ *      summary: Dar o quitar like a un post
+ *      tags:
  *       - Posts
- *     security:
+ *      security:
  *       - bearerAuth: []
- *     parameters:
+ *      parameters:
  *       - in: path
  *         name: postId
  *         required: true
  *         schema:
  *           type: string
- *     responses:
+ *      responses:
  *       200:
  *         description: Like actualizado
  */
@@ -72,18 +72,18 @@ router.post('/:postId/like', authMiddleware, like);
  * @swagger
  * /api/posts/{postId}:
  *   delete:
- *     summary: Eliminar un post
- *     tags:
+ *      summary: Eliminar un post
+ *      tags:
  *       - Posts
- *     security:
+ *      security:
  *       - bearerAuth: []
- *     parameters:
+ *      parameters:
  *       - in: path
  *         name: postId
  *         required: true
  *         schema:
  *           type: string
- *     responses:
+ *      responses:
  *       200:
  *         description: Post eliminado
  *       401:

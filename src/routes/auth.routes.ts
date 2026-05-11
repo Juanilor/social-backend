@@ -75,9 +75,9 @@ router.post("/login", [
 
 /**
  *  @swagger
- * /api/auth/me
+ * /api/auth/me:
  *  get:
- *      summary: Optener usuario autenticado
+ *      summary: Obtener usuario autenticado
  *      tags:
  *        - Auth
  *      security:
