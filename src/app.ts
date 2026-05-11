@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import authRoutes from "./routes/auth.routes"
 import postRoutes from "./routes/post.routes"
@@ -8,6 +9,7 @@ import { swaggerSpec } from "./config/swagger";
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.send("Api Levantada");
