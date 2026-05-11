@@ -59,13 +59,13 @@ http://localhost:3000/api/docs
 ## Project Structure
 
 src/
-|--config/
-|--controllers/
-|--middlewares/
-|--models/
-|--routes/
-|--services/
-|--utils/
+├── config/
+├── controllers/
+├── middlewares/
+├── models/
+├── routes/
+├── services/
+├── utils/
 
 ## Future Improvements
 
