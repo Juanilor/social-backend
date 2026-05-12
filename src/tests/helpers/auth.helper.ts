@@ -1,0 +1,25 @@
+import request from 'supertest';
+import app from '../../app';
+
+export const createAndLoginUser = async () => {
+
+    const email = `test${Date.now()}@test.com`;
+
+    await request(app)
+        .post('/api/auth/register')
+        .send({
+            username: `user${Date.now()}`,
+            email,
+            password: "123456",
+        });
+
+    const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+            email,
+            password: '123456',
+        });
+
+    return response.body.token;
+
+}
