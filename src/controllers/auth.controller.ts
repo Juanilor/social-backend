@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         const data = await loginUser(email, password);
 
-        res.json(data);
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }

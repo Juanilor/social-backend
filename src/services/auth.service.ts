@@ -38,7 +38,7 @@ export const loginUser = async (email: string, password: string) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        throw new AppError("El usuario no existe", 401);
+        throw new AppError("Credenciales invalidas", 401);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

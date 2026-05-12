@@ -8,6 +8,8 @@ describe("Post Routes", () => {
 
         const token = await createAndLoginUser();
 
+        console.log(token);
+
         const response = await request(app)
             .post("/api/posts")
             .set("Authorization", `Bearer ${token}`)
@@ -19,4 +21,28 @@ describe("Post Routes", () => {
 
         expect(response.body.content).toBe("TEST CONTENT.")
     }, 10000);
+
+
+    it("Should fail without token", async () => {
+
+        const response = await request(app)
+            .post("/api/posts")
+            .send({ content: "TEST CONTENT WITHOUT TOKEN" });
+
+        expect(response.status).toBe(401);
+
+    }, 10000);
+
+    it("Should not delete another user's post", async () => {
+        const tokenUser1 = await createAndLoginUser();
+
+        const postResponse = await request(app).post("/api/posts").set("Authorization", `Bearer ${tokenUser1}`).send({ content: "PRIVATE POST" });
+
+        const tokenUser2 = await createAndLoginUser();
+
+        const response = await request(app).delete(`/api/posts/${postResponse.body._id}`).set("Authorization", `Bearer ${tokenUser2}`);
+
+        expect(response.status).toBe(403);
+    },10000)
+
 });

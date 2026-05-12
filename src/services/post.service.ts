@@ -53,7 +53,7 @@ export const deletePost = async (postId: string, userId: string) => {
     }
 
     if (post.author.toString() !== userId) {
-        throw new AppError("No autorizado.", 401);
+        throw new AppError("No autorizado.", 403);
     }
 
 

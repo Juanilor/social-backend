@@ -8,7 +8,15 @@ export const authMiddleware = (
     res: Response,
     next: NextFunction
 ) => {
-    const token = req.headers.authorization?.split(" ")[1];
+
+    const authHeader = req.headers.authorization;
+    
+
+    if (!authHeader?.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "No autorizado" });
+    }
+
+    const token = authHeader.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ message: "No autorizado" });

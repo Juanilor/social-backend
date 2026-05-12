@@ -40,10 +40,6 @@ describe("Auth Routes", () => {
 
         expect(response.body).toHaveProperty("token");
 
-
-
-
-
     }, 10000)
 
 
