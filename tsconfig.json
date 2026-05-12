@@ -5,6 +5,7 @@
     "rootDir": "./src", //Raiz del codigo
     "outDir": "./dist", //Codigo compilado
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["node", "jest"]
   }
 }
