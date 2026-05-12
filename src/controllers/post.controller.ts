@@ -8,7 +8,7 @@ export const create = async (req: AuthRequest, res: Response, next: NextFunction
 
         const post = await createPost(content, req.user.id);
 
-        res.status(200).json(post);
+        res.status(201).json(post);
     } catch (error) {
         next(error);
     }
