@@ -43,6 +43,23 @@ describe("Post Routes", () => {
         const response = await request(app).delete(`/api/posts/${postResponse.body._id}`).set("Authorization", `Bearer ${tokenUser2}`);
 
         expect(response.status).toBe(403);
-    },10000)
+    }, 10000)
 
+
+    it("Should comment on a post", async () => {
+
+        const token = await createAndLoginUser();
+
+        const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "COMMENTED POST" });
+
+        const response = await request(app).post(`/api/posts/${postResponse.body._id}/comments`).set("Authorization", `Bearer ${token}`).send({ content: "POST COMMENTARY" });
+
+        expect(response.status).toBe(201);
+
+        expect(response.body.comments).toHaveLength(1);
+
+        expect(response.body.comments[0].content).toBe("POST COMMENTARY");
+
+
+    }, 10000);
 });

@@ -66,7 +66,7 @@ export const comment = async (req: AuthRequest, res: Response, next: NextFunctio
             content
         );
 
-        res.json(post);
+        res.status(201).json(post);
     } catch (error) {
         next(error);
     }
