@@ -33,7 +33,7 @@ export const like = async (req: AuthRequest, res: Response, next: NextFunction) 
         
         const post = await toggleLike(postId, req.user.id);
         
-        res.json(post);
+        res.status(200).json(post);
         
     } catch (error) {
         next(error)
