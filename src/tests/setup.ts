@@ -1,12 +1,20 @@
-import mongoose, { Collection } from "mongoose";
-import dotenv from "dotenv"
+import mongoose from "mongoose";
+import {MongoMemoryServer} from 'mongodb-memory-server'
 
-dotenv.config();
+
+let mongoServer: MongoMemoryServer;
+
+
 
 
 beforeAll(async () => {
 
-    await mongoose.connect(process.env.MONGO_URI as string);
+mongoServer = await MongoMemoryServer.create()
+
+const uri = mongoServer.getUri();
+
+await mongoose.connect(uri);
+
 });
 
 afterEach(async () => {
@@ -23,4 +31,7 @@ afterEach(async () => {
 
 afterAll(async () => {
     await mongoose.connection.close();
+
+
+    await mongoServer.stop();
 });
