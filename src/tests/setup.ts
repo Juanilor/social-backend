@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import {MongoMemoryServer} from 'mongodb-memory-server'
-
+import dotenv from 'dotenv'
 
 let mongoServer: MongoMemoryServer;
 
-
+dotenv.config();
 
 
 beforeAll(async () => {
