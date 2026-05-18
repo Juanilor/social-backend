@@ -95,4 +95,21 @@ describe("Post Routes", () => {
 
     }, 10000)
 
+    it("Should paginate posts", async () => {
+
+        const token = await createAndLoginUser();
+
+        for(let i = 0; i < 10; i++){
+            await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({content: `Pagination Test, post ${i}`});
+        }
+
+        const response = await request(app).get('/api/posts?page=1&limit=2');
+
+        expect(response.status).toBe(200);
+        expect(response.body.posts).toHaveLength(2);
+        expect(response.body).toHaveProperty('totalPages');
+
+
+    }, 10000);
+
 });

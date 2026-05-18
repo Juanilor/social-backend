@@ -17,9 +17,14 @@ export const create = async (req: AuthRequest, res: Response, next: NextFunction
 export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
 
     try {
-        const posts = await getAllPost();
+        const page = Number(_req.query.page) || 1;
 
-        res.json(posts);
+        const limit = Number(_req.query.limit) || 10;
+
+        const posts = await getAllPost(page, limit);
+
+        res.status(200).json(posts);
+
     } catch (error) {
         next(error);
     }
@@ -29,12 +34,12 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
 export const like = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
 
-        const  postId  = req.params.postId as string;
-        
+        const postId = req.params.postId as string;
+
         const post = await toggleLike(postId, req.user.id);
-        
+
         res.status(200).json(post);
-        
+
     } catch (error) {
         next(error)
     }
@@ -43,10 +48,10 @@ export const like = async (req: AuthRequest, res: Response, next: NextFunction) 
 export const remove = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
 
-        const  postId  = req.params.postId as string;
-        
+        const postId = req.params.postId as string;
+
         const result = await deletePost(postId, req.user.id);
-        
+
         res.json(result);
     } catch (error) {
         next(error);
@@ -55,9 +60,9 @@ export const remove = async (req: AuthRequest, res: Response, next: NextFunction
 
 export const comment = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-        
-        
-        const  postId  = req.params.postId as string;
+
+
+        const postId = req.params.postId as string;
         const { content } = req.body;
 
         const post = await addComment(

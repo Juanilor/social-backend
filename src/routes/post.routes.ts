@@ -41,6 +41,17 @@ router.post('/', authMiddleware, create);
  *      summary: Obtener todos los posts
  *      tags:
  *       - Posts
+ *      parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *            type: integer
+ *         required: false
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *            type: integer
+ *         required: false   
  *      responses:
  *       200:
  *         description: Lista de posts

@@ -12,14 +12,28 @@ export const createPost = async (content: string, userId: string) => {
 }
 
 
-export const getAllPost = async () => {
+export const getAllPost = async (
+    page: number,
+    limit: number
+) => {
+    const skip = (page - 1) * limit;
+
     const posts = await Post.find()
         .populate("author", "username email")
         .populate("comments.user", "username")
-        .sort({ createAt: - 1 });
+        .sort({ createAt: - 1 })
+        .skip(skip)
+        .limit(limit);
 
-    return posts;
-}
+    const total = await Post.countDocuments();
+
+    return {
+        posts,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalPost: total,
+    };
+};
 
 export const toggleLike = async (postId: string, userId: string) => {
     const post = await Post.findById(postId);
