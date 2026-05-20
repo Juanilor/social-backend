@@ -4,6 +4,14 @@ export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
+    followers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }]
     createAt: Date;
 }
 
@@ -24,6 +32,18 @@ const UserSchema = new Schema<IUser>({
         type: String,
         required: true
     },
+    followers: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        },
+    ],
+    following: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        },
+    ],
 },
     {
         timestamps: true
