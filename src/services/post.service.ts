@@ -12,7 +12,7 @@ export const createPost = async (content: string, userId: string) => {
 }
 
 
-export const getAllPost = async (
+export const getAllPosts = async (
     page: number,
     limit: number
 ) => {
@@ -21,7 +21,7 @@ export const getAllPost = async (
     const posts = await Post.find()
         .populate("author", "username email")
         .populate("comments.user", "username")
-        .sort({ createAt: - 1 })
+        .sort({ createAt: -1 }) //Este cambio de - 1 a -1 es porque como ordena de atras a adelante lo hace de -1++ y no - 1, que seria restando al total. 
         .skip(skip)
         .limit(limit);
 
@@ -54,25 +54,26 @@ export const toggleLike = async (postId: string, userId: string) => {
 
     await post.save();
 
+    
     return post;
 }
 
 
 export const deletePost = async (postId: string, userId: string) => {
-
+    
     const post = await Post.findById(postId);
-
+    
     if (!post) {
         throw new AppError("Post no encontrado.", 404);
     }
-
+    
     if (post.author.toString() !== userId) {
         throw new AppError("No autorizado.", 403);
     }
-
-
+    
+    
     await post.deleteOne();
-
+    
     return {
         message: "Post eliminado."
     };
@@ -80,20 +81,22 @@ export const deletePost = async (postId: string, userId: string) => {
 
 
 export const addComment = async (postId: string, userId: string, content: string) => {
-
+    
     const post = await Post.findById(postId);
-
+    
     if (!post) {
         throw new AppError("Post no encontrado", 404);
     }
-
+    
     post.comments.push({
         user: userId as any,
         content
     });
-
+    
     await post.save();
+    
+    const populatedPost = await Post.findById(post._id).populate("author", "username").populate("comments.user", "username");
 
-    return post;
+    return populatedPost;
 
 }

@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import {
-    comment,
-    create, getAll, like,
-    remove
+    commentPostController,
+    createPostController,
+    getAllPostsController,
+    likePostController,
+
+    removePostController
 } from "../controllers/post.controller";
+import { commentPostValidator, createPostValidator } from "../validators/post.validator";
+import { validate } from "../middlewares/validation.middleware";
 
 const router = Router();
 
@@ -32,7 +37,7 @@ const router = Router();
  *       201:
  *         description: Post creado con exito.
  */
-router.post('/', authMiddleware, create);
+router.post('/', authMiddleware, createPostValidator, validate, createPostController);
 
 /**
  * @swagger
@@ -56,7 +61,7 @@ router.post('/', authMiddleware, create);
  *       200:
  *         description: Lista de posts
  */
-router.get('/', getAll);
+router.get('/', getAllPostsController);
 
 /**
  * @swagger
@@ -77,7 +82,7 @@ router.get('/', getAll);
  *       200:
  *         description: Like actualizado
  */
-router.post('/:postId/like', authMiddleware, like);
+router.post('/:postId/like', authMiddleware, likePostController);
 
 /**
  * @swagger
@@ -100,7 +105,7 @@ router.post('/:postId/like', authMiddleware, like);
  *       401:
  *         description: No autorizado
  */
-router.delete('/:postId', authMiddleware, remove);
+router.delete('/:postId', authMiddleware, removePostController);
 
 /**
  * @swagger
@@ -127,9 +132,9 @@ router.delete('/:postId', authMiddleware, remove);
  *               content:
  *                 type: string
  *     responses:
- *       200:
+ *       201:
  *         description: Comentario agregado
  */
-router.post('/:postId/comments',authMiddleware,comment);
+router.post('/:postId/comments', authMiddleware, commentPostValidator, validate, commentPostController);
 
 export default router;

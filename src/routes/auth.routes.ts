@@ -1,11 +1,9 @@
 import { Router } from "express";
-import { body } from "express-validator";
 import { validate } from "../middlewares/validation.middleware"
 
 
-import { register, login } from "../controllers/auth.controller";
+import { loginUserController, registerUserController, getMeUserController } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
-import { getMe } from "../controllers/auth.controller";
 import { loginValidator, regiterValidator } from "../validators/auth.validator";
 
 
@@ -37,7 +35,7 @@ const router = Router();
  */
 
 
-router.post("/register", regiterValidator, validate, register);
+router.post("/register", regiterValidator, validate, registerUserController);
 
 /**
  * @swagger
@@ -62,7 +60,7 @@ router.post("/register", regiterValidator, validate, register);
  *         description: Login exitoso
  */
 
-router.post("/login", loginValidator, validate, login);
+router.post("/login", loginValidator, validate, loginUserController);
 
 /**
  *  @swagger
@@ -81,6 +79,6 @@ router.post("/login", loginValidator, validate, login);
  *      
  */
 
-router.get("/me", authMiddleware, getMe);
+router.get("/me", authMiddleware, getMeUserController);
 
 export default router;

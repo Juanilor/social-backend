@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
-import { createPost, getAllPost, toggleLike, deletePost, addComment } from "../services/post.service";
+import { createPost, getAllPosts, toggleLike, deletePost, addComment } from "../services/post.service";
 
-export const create = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const createPostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const { content } = req.body;
 
@@ -14,14 +14,14 @@ export const create = async (req: AuthRequest, res: Response, next: NextFunction
     }
 };
 
-export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
+export const getAllPostsController = async (_req: Request, res: Response, next: NextFunction) => {
 
     try {
         const page = Number(_req.query.page) || 1;
 
         const limit = Number(_req.query.limit) || 10;
 
-        const posts = await getAllPost(page, limit);
+        const posts = await getAllPosts(page, limit);
 
         res.status(200).json(posts);
 
@@ -31,7 +31,7 @@ export const getAll = async (_req: Request, res: Response, next: NextFunction) =
 };
 
 
-export const like = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const likePostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
 
         const postId = req.params.postId as string;
@@ -45,7 +45,7 @@ export const like = async (req: AuthRequest, res: Response, next: NextFunction) 
     }
 };
 
-export const remove = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const removePostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
 
         const postId = req.params.postId as string;
@@ -58,7 +58,7 @@ export const remove = async (req: AuthRequest, res: Response, next: NextFunction
     }
 };
 
-export const comment = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const commentPostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
 
 

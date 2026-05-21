@@ -7,7 +7,7 @@ import User from "../models/User";
 import { AuthRequest } from "../middlewares/auth.middleware";
 
 
-export const getMe = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getMeUserController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
 
@@ -18,7 +18,7 @@ export const getMe = async (req: AuthRequest, res: Response, next: NextFunction)
 };
 
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
+export const registerUserController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { username, email, password } = req.body;
 
@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const loginUserController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
 
