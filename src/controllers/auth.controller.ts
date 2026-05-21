@@ -22,9 +22,9 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     try {
         const { username, email, password } = req.body;
 
-        const user = await registerUser(username, email, password);
+        const data = await registerUser(username, email, password);
 
-        res.status(201).json(user);
+        res.status(201).json(data);
     } catch (error) {
         next(error)
     }

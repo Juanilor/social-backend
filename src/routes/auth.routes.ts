@@ -6,6 +6,7 @@ import { validate } from "../middlewares/validation.middleware"
 import { register, login } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { getMe } from "../controllers/auth.controller";
+import { loginValidator, regiterValidator } from "../validators/auth.validator";
 
 
 const router = Router();
@@ -31,17 +32,12 @@ const router = Router();
  *               password:
  *                 type: string
  *     responses:
- *       200:
+ *       201:
  *         description: Registro exitoso
  */
 
 
-router.post("/register", [
-
-    body("username").notEmpty().withMessage("Username requerido."),
-    body("email").isEmail().withMessage("Email invalido."),
-    body("password").isLength({ min: 6 }).withMessage("Minimo 6 caracteres."),
-], validate, register);
+router.post("/register", regiterValidator, validate, register);
 
 /**
  * @swagger
@@ -66,12 +62,7 @@ router.post("/register", [
  *         description: Login exitoso
  */
 
-router.post("/login", [
-
-    body("email").isEmail().withMessage("Email invalido"),
-    body("password").isLength({ min: 6 }).withMessage("Minimo 6 caracteres.")
-
-], validate, login);
+router.post("/login", loginValidator, validate, login);
 
 /**
  *  @swagger
@@ -81,8 +72,8 @@ router.post("/login", [
  *      tags:
  *        - Auth
  *      security:
- *          -bearerAuth: []
- *      response:
+ *          - bearerAuth: []
+ *      responses:
  *      200:
  *          description: Usuario autenticado
  *      400:
