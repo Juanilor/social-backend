@@ -10,6 +10,7 @@ import {
 } from "../controllers/post.controller";
 import { commentPostValidator, createPostValidator } from "../validators/post.validator";
 import { validate } from "../middlewares/validation.middleware";
+import { mongoIdValidator } from "../validators/common.validator";
 
 const router = Router();
 
@@ -82,7 +83,7 @@ router.get('/', getAllPostsController);
  *       200:
  *         description: Like actualizado
  */
-router.post('/:postId/like', authMiddleware, likePostController);
+router.post('/:postId/like', authMiddleware, mongoIdValidator("postId"), likePostController);
 
 /**
  * @swagger
@@ -105,7 +106,7 @@ router.post('/:postId/like', authMiddleware, likePostController);
  *       401:
  *         description: No autorizado
  */
-router.delete('/:postId', authMiddleware, removePostController);
+router.delete('/:postId', authMiddleware, mongoIdValidator("postId"),removePostController);
 
 /**
  * @swagger
@@ -135,6 +136,6 @@ router.delete('/:postId', authMiddleware, removePostController);
  *       201:
  *         description: Comentario agregado
  */
-router.post('/:postId/comments', authMiddleware, commentPostValidator, validate, commentPostController);
+router.post('/:postId/comments', authMiddleware, mongoIdValidator("postId"), commentPostValidator, validate, commentPostController);
 
 export default router;
