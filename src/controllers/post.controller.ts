@@ -8,7 +8,10 @@ export const createPostController = async (req: AuthRequest, res: Response, next
 
         const post = await createPost(content, req.user.id);
 
-        res.status(201).json(post);
+        res.status(201).json({
+            success: true,
+            data: post
+        });
     } catch (error) {
         next(error);
     }
@@ -23,7 +26,10 @@ export const getAllPostsController = async (_req: Request, res: Response, next: 
 
         const posts = await getAllPosts(page, limit);
 
-        res.status(200).json(posts);
+        res.status(200).json({
+            success: true,
+            data: posts
+        });
 
     } catch (error) {
         next(error);
@@ -38,7 +44,10 @@ export const likePostController = async (req: AuthRequest, res: Response, next: 
 
         const post = await toggleLike(postId, req.user.id);
 
-        res.status(200).json(post);
+        res.status(200).json({
+            success: true,
+            data: post
+        });
 
     } catch (error) {
         next(error)
@@ -52,7 +61,10 @@ export const removePostController = async (req: AuthRequest, res: Response, next
 
         const result = await deletePost(postId, req.user.id);
 
-        res.json(result);
+        res.json({
+            success: true,
+            data: result
+        });
     } catch (error) {
         next(error);
     }
@@ -71,7 +83,10 @@ export const commentPostController = async (req: AuthRequest, res: Response, nex
             content
         );
 
-        res.status(201).json(post);
+        res.status(201).json({
+            success: true,
+            data: post
+        });
     } catch (error) {
         next(error);
     }

@@ -11,7 +11,10 @@ export const getMeUserController = async (req: AuthRequest, res: Response, next:
     try {
         const user = await User.findById(req.user.id).select("-password");
 
-        res.json(user);
+        res.json({
+            success: true,
+            data: user
+        });
     } catch (error) {
         next(error);
     }
@@ -24,7 +27,10 @@ export const registerUserController = async (req: Request, res: Response, next: 
 
         const data = await registerUser(username, email, password);
 
-        res.status(201).json(data);
+        res.status(201).json({
+            success: true,
+            data: data
+        });
     } catch (error) {
         next(error)
     }
@@ -36,7 +42,10 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
 
         const data = await loginUser(email, password);
 
-        res.status(200).json(data);
+        res.status(200).json({
+            success: true,
+            data: data
+        });
     } catch (error) {
         next(error);
     }
