@@ -20,6 +20,6 @@ export const createAndLoginUser = async () => {
             password: '123456',
         });
 
-    return response.body.token;
+    return response.body.data.token;
 
 }

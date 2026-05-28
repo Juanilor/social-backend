@@ -14,11 +14,11 @@ describe("Auth Routes", () => {
 
         expect(response.status).toBe(201);
 
-        expect(response.body).toHaveProperty("token");
+        expect(response.body.data).toHaveProperty("token");
 
-        expect(response.body.user).toHaveProperty("_id");
+        expect(response.body.data.user).toHaveProperty("_id");
 
-        expect(response.body.user.email).toContain("@test.com");
+        expect(response.body.data.user.email).toContain("@test.com");
 
 
     }, 10000);
@@ -38,7 +38,7 @@ describe("Auth Routes", () => {
 
         expect(response.status).toBe(200);
 
-        expect(response.body).toHaveProperty("token");
+        expect(response.body.data).toHaveProperty("token");
 
     }, 10000)
 

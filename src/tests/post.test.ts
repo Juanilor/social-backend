@@ -17,9 +17,9 @@ describe("Post Routes", () => {
 
         expect(response.status).toBe(201);
 
-        expect(response.body).toHaveProperty("_id");
+        expect(response.body.data).toHaveProperty("author");
 
-        expect(response.body.content).toBe("TEST CONTENT.")
+        expect(response.body.data.content).toBe("TEST CONTENT.")
     }, 10000);
 
 
@@ -40,7 +40,7 @@ describe("Post Routes", () => {
 
         const tokenUser2 = await createAndLoginUser();
 
-        const response = await request(app).delete(`/api/posts/${postResponse.body._id}`).set("Authorization", `Bearer ${tokenUser2}`);
+        const response = await request(app).delete(`/api/posts/${postResponse.body.data._id}`).set("Authorization", `Bearer ${tokenUser2}`);
 
         expect(response.status).toBe(403);
     }, 10000)
@@ -52,13 +52,13 @@ describe("Post Routes", () => {
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "COMMENTED POST" });
 
-        const response = await request(app).post(`/api/posts/${postResponse.body._id}/comments`).set("Authorization", `Bearer ${token}`).send({ content: "POST COMMENTARY" });
+        const response = await request(app).post(`/api/posts/${postResponse.body.data._id}/comments`).set("Authorization", `Bearer ${token}`).send({ content: "POST COMMENTARY" });
 
         expect(response.status).toBe(201);
 
-        expect(response.body.comments).toHaveLength(1);
+        expect(response.body.data.comments).toHaveLength(1);
 
-        expect(response.body.comments[0].content).toBe("POST COMMENTARY");
+        expect(response.body.data.comments[0].content).toBe("POST COMMENTARY");
 
 
     }, 10000);
@@ -70,11 +70,11 @@ describe("Post Routes", () => {
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "LIKEABLE POST" });
 
-        const response = await request(app).post(`/api/posts/${postResponse.body._id}/like`).set("Authorization", `Bearer ${token}`);
+        const response = await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(200);
 
-        expect(response.body.likes).toHaveLength(1);
+        expect(response.body.data.likes).toHaveLength(1);
     }, 10000);
 
 
@@ -84,13 +84,13 @@ describe("Post Routes", () => {
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "TOGGLE LIKE POST" });
         
-        await request(app).post(`/api/posts/${postResponse.body._id}/like`).set("Authorization", `Bearer ${token}`);
+        await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${token}`);
         
-        const response = await request(app).post(`/api/posts/${postResponse.body._id}/like`).set("Authorization", `Bearer ${token}`);
+        const response = await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(200);
 
-        expect(response.body.likes).toHaveLength(0);
+        expect(response.body.data.likes).toHaveLength(0);
 
 
     }, 10000)
@@ -106,8 +106,8 @@ describe("Post Routes", () => {
         const response = await request(app).get('/api/posts?page=1&limit=2');
 
         expect(response.status).toBe(200);
-        expect(response.body.posts).toHaveLength(2);
-        expect(response.body).toHaveProperty('totalPages');
+        expect(response.body.data.posts).toHaveLength(2);
+        expect(response.body.data).toHaveProperty('totalPages');
 
 
     }, 10000);
