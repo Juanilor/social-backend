@@ -11,7 +11,7 @@ export interface IPost extends Document {
     author: mongoose.Types.ObjectId;
     likes: mongoose.Types.ObjectId[];
     comments: IComments[];
-    createAt: Date;
+    createdAt: Date;
 
 }
 
@@ -44,7 +44,7 @@ const PostSchema = new Schema<IPost>(
                     required: true,
                     trim: true
                 },
-                createAt: {
+                createdAt: {
                     type: Date,
                     default: Date.now,
                 },

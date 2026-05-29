@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
 import { createPost, getAllPosts, toggleLike, deletePost, addComment } from "../services/post.service";
+import { successResponse } from "../helpers/response.helper";
 
 export const createPostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
@@ -8,10 +9,7 @@ export const createPostController = async (req: AuthRequest, res: Response, next
 
         const post = await createPost(content, req.user.id);
 
-        res.status(201).json({
-            success: true,
-            data: post
-        });
+        return successResponse(res, post, "Post creado correctamente.", 201);
     } catch (error) {
         next(error);
     }
@@ -26,10 +24,7 @@ export const getAllPostsController = async (_req: Request, res: Response, next: 
 
         const posts = await getAllPosts(page, limit);
 
-        res.status(200).json({
-            success: true,
-            data: posts
-        });
+        return successResponse(res, posts)
 
     } catch (error) {
         next(error);
@@ -44,10 +39,7 @@ export const likePostController = async (req: AuthRequest, res: Response, next: 
 
         const post = await toggleLike(postId, req.user.id);
 
-        res.status(200).json({
-            success: true,
-            data: post
-        });
+        return successResponse(res, post, "Like actualizado.");
 
     } catch (error) {
         next(error)
@@ -61,10 +53,8 @@ export const removePostController = async (req: AuthRequest, res: Response, next
 
         const result = await deletePost(postId, req.user.id);
 
-        res.json({
-            success: true,
-            data: result
-        });
+        return successResponse(res, result, "Post eliminado.");
+
     } catch (error) {
         next(error);
     }
@@ -83,10 +73,7 @@ export const commentPostController = async (req: AuthRequest, res: Response, nex
             content
         );
 
-        res.status(201).json({
-            success: true,
-            data: post
-        });
+        return successResponse(res,post, "Comentario creado.", 201);
     } catch (error) {
         next(error);
     }
