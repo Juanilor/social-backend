@@ -13,7 +13,7 @@ export const follow = async (
     next: NextFunction
 ) => {
     try {
-        const targetUserId = req.params.id;
+        const targetUserId = req.params.id as string;
 
 
         const result = await toggleFollow(

@@ -30,7 +30,7 @@ export const toggleFollow = async (
 
         currentUser.following = currentUser.following.filter((id) => id.toString() !== targetUserId);
 
-        targetUser.followers = targetUser.followers.filter((id) => id.toString() !== currentUser);
+        targetUser.followers = targetUser.followers.filter((id) => id.toString() !== currentUserId);
 
     } else {
         currentUser.following.push(targetUserId as any);
