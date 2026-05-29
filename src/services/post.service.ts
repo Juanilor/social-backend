@@ -1,4 +1,3 @@
-import { successResponse } from "../helpers/response.helper";
 import Post from "../models/Post";
 import { AppError } from "../utils/AppError";
 
