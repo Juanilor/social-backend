@@ -6,7 +6,8 @@ export interface IUser extends Document {
     password: string;
     followers: mongoose.Types.ObjectId[],
     following: mongoose.Types.ObjectId[],
-    createAt: Date;
+    createdAt: Date;
+    updateAt: Date;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -26,8 +27,24 @@ const UserSchema = new Schema<IUser>({
         type: String,
         required: true
     },
-    followers: mongoose.Types.ObjectId,
-    following: mongoose.Types.ObjectId,
+    followers: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        default: []
+    },
+    following: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        default: []
+    },
 },
     {
         timestamps: true

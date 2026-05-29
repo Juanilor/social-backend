@@ -42,7 +42,9 @@ export const toggleFollow = async (
     await targetUser.save();
 
     return {
-        following: !alreadyFollowing
+        following: !alreadyFollowing,
+        followersCount: targetUser.followers.length,
+        followingsCount: currentUser.following.length,
     }
 
 }
