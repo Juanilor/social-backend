@@ -1,14 +1,12 @@
 import request from "supertest";
 import app from "../app";
-import { createAndLoginUser } from "./helpers/auth.helper";
+import { createAndLoginUserAndGetToken } from "./helpers/auth.helper";
 
 describe("Post Routes", () => {
 
     it("Should create a new post", async () => {
 
-        const token = await createAndLoginUser();
-
-        console.log(token);
+        const token = await createAndLoginUserAndGetToken();
 
         const response = await request(app)
             .post("/api/posts")
@@ -34,11 +32,11 @@ describe("Post Routes", () => {
     }, 10000);
 
     it("Should not delete another user's post", async () => {
-        const tokenUser1 = await createAndLoginUser();
+        const tokenUser1 = await createAndLoginUserAndGetToken();
 
         const postResponse = await request(app).post("/api/posts").set("Authorization", `Bearer ${tokenUser1}`).send({ content: "PRIVATE POST" });
 
-        const tokenUser2 = await createAndLoginUser();
+        const tokenUser2 = await createAndLoginUserAndGetToken();
 
         const response = await request(app).delete(`/api/posts/${postResponse.body.data._id}`).set("Authorization", `Bearer ${tokenUser2}`);
 
@@ -48,7 +46,7 @@ describe("Post Routes", () => {
 
     it("Should comment on a post", async () => {
 
-        const token = await createAndLoginUser();
+        const token = await createAndLoginUserAndGetToken();
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "COMMENTED POST" });
 
@@ -66,7 +64,7 @@ describe("Post Routes", () => {
 
     it("Should like a post", async () => {
 
-        const token = await createAndLoginUser();
+        const token = await createAndLoginUserAndGetToken();
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "LIKEABLE POST" });
 
@@ -80,12 +78,12 @@ describe("Post Routes", () => {
 
     it("Should unlike a post", async () => {
 
-        const token = await createAndLoginUser();
+        const token = await createAndLoginUserAndGetToken();
 
         const postResponse = await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: "TOGGLE LIKE POST" });
-        
+
         await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${token}`);
-        
+
         const response = await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(200);
@@ -97,10 +95,10 @@ describe("Post Routes", () => {
 
     it("Should paginate posts", async () => {
 
-        const token = await createAndLoginUser();
+        const token = await createAndLoginUserAndGetToken();
 
-        for(let i = 0; i < 10; i++){
-            await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({content: `Pagination Test, post ${i}`});
+        for (let i = 0; i < 10; i++) {
+            await request(app).post('/api/posts').set("Authorization", `Bearer ${token}`).send({ content: `Pagination Test, post ${i}` });
         }
 
         const response = await request(app).get('/api/posts?page=1&limit=2');
