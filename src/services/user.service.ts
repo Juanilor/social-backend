@@ -24,7 +24,9 @@ export const toggleFollow = async (
         );
     };
 
-    const alreadyFollowing = currentUser.following.includes(targetUserId as any);
+    const alreadyFollowing = currentUser.following.some(
+        id => id.toString() === targetUserId
+    );
 
     if (alreadyFollowing) {
 
@@ -44,7 +46,7 @@ export const toggleFollow = async (
     return {
         following: !alreadyFollowing,
         followersCount: targetUser.followers.length,
-        followingsCount: currentUser.following.length,
+        followingCount: currentUser.following.length,
     }
 
 }
