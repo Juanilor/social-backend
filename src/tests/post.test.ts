@@ -1,8 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
-import { log } from "node:console";
-import User from "../models/User";
 
 describe("Post Routes", () => {
 
@@ -72,8 +70,6 @@ describe("Post Routes", () => {
 
         const response = await request(app).post(`/api/posts/${postResponse.body.data._id}/like`).set("Authorization", `Bearer ${user.token}`);
 
-        log(response)
-        
         expect(response.status).toBe(200);
 
         expect(response.body.data.likes).toHaveLength(1);

@@ -1,3 +1,4 @@
+import Post from "../models/Post";
 import User from "../models/User";
 
 import { AppError } from "../utils/AppError";
@@ -47,6 +48,35 @@ export const toggleFollow = async (
         following: !alreadyFollowing,
         followersCount: targetUser.followers.length,
         followingCount: currentUser.following.length,
+    }
+
+}
+
+
+export const getUserProfile = async (userId: string) => {
+
+
+    const user = await User.findById(userId).select('-password');
+
+    if (!user) {
+        throw new AppError("Usuario no disponible.", 404);
+    }
+
+
+    const postCount = await Post.countDocuments({
+        author: userId,
+    });
+
+
+    return {
+        success: true,
+        data: {
+            ...user.toObject(),
+            followerCount: user.followers,
+            followingCount: user.following,
+            postCount
+        }
+
     }
 
 }

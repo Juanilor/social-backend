@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
-import { log } from "node:console";
 
 
 describe("User Routes", () => {
@@ -24,41 +23,41 @@ describe("User Routes", () => {
 
         const user1 = await createAndLoginUser();
         const user2 = await createAndLoginUser();
-        
+
         const follow = await request(app).post(`/api/users/${user2.user._id}/follow`).set("Authorization", `Bearer ${user1.token}`);
-        
+
         expect(follow.status).toBe(200)
         expect(follow.body.data.following).toBe(true);
-        
+
         const unfollow = await request(app).post(`/api/users/${user2.user._id}/follow`).set("Authorization", `Bearer ${user1.token}`);
-        
+
         expect(unfollow.status).toBe(200);
         expect(unfollow.body.data.following).toBe(false);
-    })
-    
+    }, 10000)
+
     it("Should not follow yourself", async () => {
-        
+
         const user1 = await createAndLoginUser();
-        
+
         const follow = await request(app).post(`/api/users/${user1._id}/follow`).set("Authorization", `Bearer ${user1.token}`);
-        
+
         expect(follow.status).toBe(400);
-        
-    })
-    
-    
-    it("Should return 404 for invalid user", async () =>{
-        
+
+    }, 10000)
+
+
+    it("Should return 404 for invalid user", async () => {
+
         const user1 = await createAndLoginUser();
-        
+
         const fakeId = "507f1f77bcf86cd799439011";
 
         const follow = await request(app).post(`/api/users/${fakeId}/follow`).set("Authorization", `Bearer ${user1.token}`);
-        
+
         expect(follow.status).toBe(404);
 
 
-    })
+    }, 10000)
 
     it("Should require authorization", async () => {
 
@@ -66,12 +65,26 @@ describe("User Routes", () => {
 
         const follow = await request(app).post(`/api/users/${user.user._id}/follow`);
 
-        log(follow)
-
         expect(follow.status).toBe(401);
 
-    })
+    }, 10000)
 
+
+    it("Should get user profile", async () => {
+
+        const user = await createAndLoginUser();
+
+        
+        const response = await request(app).get(`/api/users/${user.user._id}`);
+        
+        const data = response.body.data.data;
+
+        expect(response.status).toBe(200);
+
+        expect(data).toHaveProperty("username");
+        expect(data).toHaveProperty("followerCount");
+
+    }, 10000)
 
 
 

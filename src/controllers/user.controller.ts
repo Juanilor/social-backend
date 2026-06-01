@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 
 import { AuthRequest } from "../middlewares/auth.middleware";
 
-import { toggleFollow } from "../services/user.service";
+import { getUserProfile, toggleFollow } from "../services/user.service";
 
 import { successResponse } from "../helpers/response.helper";
 
@@ -26,4 +26,28 @@ export const follow = async (
     } catch (error) {
         next(error);
     }
+}
+
+
+export const profile = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+
+    try {
+        const userId = req.params.id;
+
+        const user = await getUserProfile(userId as string);
+
+        return successResponse(
+            res,
+            user
+        );
+
+    }catch(error){
+        next(error);
+    }
+
+
 }
