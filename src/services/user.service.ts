@@ -80,3 +80,35 @@ export const getUserProfile = async (userId: string) => {
     }
 
 }
+
+export const getFollowers = async (userId: string) => {
+
+    const user = await User.findById(userId).populate("followers", "username email");
+
+
+    if (!user) {
+        throw new AppError("Usuario no encontrado", 404);
+    }
+
+    return {
+        followers: user.followers,
+        totalFollowers: user.followers.length,
+    };
+
+}
+
+export const getFollowing = async (userId: string) => {
+
+    const user = await User.findById(userId).populate("following", "username email");
+
+
+    if (!user) {
+        throw new AppError("Usuario no encontrado", 404);
+    }
+
+    return {
+        following: user.following,
+        totalFollowing: user.following.length,
+    };
+
+}

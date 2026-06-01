@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { authMiddleware } from "../middlewares/auth.middleware";
 
-import { follow, profile } from "../controllers/user.controller";
+import { follow, followers, following, profile } from "../controllers/user.controller";
 import { followValidator } from "../validators/user.validator";
 import { validate } from "../middlewares/validation.middleware";
 
@@ -54,6 +54,48 @@ router.post("/:id/follow", authMiddleware, followValidator, validate, follow);
 
 router.get("/:id", followValidator, validate, profile)
 
+/**
+ * @swagger
+ * /api/users/{id}/followers:
+ *   get:
+ *     summary: Obtener lista de perfiles que siguen al usuario objetivo.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Perfiles obtenidos correctamente
+ *       404:
+ *         description: Usuarios no encontrados
+ */
 
+router.get("/:id/followers", followValidator, validate, followers);
+
+/**
+ * @swagger
+ * /api/users/{id}/following:
+ *   get:
+ *     summary: Obtener lista de perfiles que el usuario objetivo sigue.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Perfiles obtenidos correctamente
+ *       404:
+ *         description: Usuarios no encontrados
+ */
+
+router.get("/:id/following", followValidator, validate, following);
 
 export default router;

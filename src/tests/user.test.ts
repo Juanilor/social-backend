@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
+import { log } from "node:console";
 
 
 describe("User Routes", () => {
@@ -74,9 +75,9 @@ describe("User Routes", () => {
 
         const user = await createAndLoginUser();
 
-        
+
         const response = await request(app).get(`/api/users/${user.user._id}`);
-        
+
         const data = response.body.data.data;
 
         expect(response.status).toBe(200);
@@ -86,6 +87,36 @@ describe("User Routes", () => {
 
     }, 10000)
 
+
+    it("Should get followers list", async () => {
+
+        const user1 = await createAndLoginUser();
+        const user2 = await createAndLoginUser();
+
+        await request(app).post(`/api/users/${user2.user._id}/follow`).set("Authorization", `Bearer ${user1.token}`);
+
+        const response = await request(app).get(`/api/users/${user2.user._id}/followers`);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body.data).toHaveLength(1);
+
+    }, 10000);
+
+    it("Should get following list", async () => {
+
+        const user1 = await createAndLoginUser();
+        const user2 = await createAndLoginUser();
+
+        await request(app).post(`/api/users/${user2.user._id}/follow`).set("Authorization", `Bearer ${user1.token}`);
+
+        const response = await request(app).get(`/api/users/${user1.user._id}/following`);
+
+        expect(response.status).toBe(200);
+
+        expect(response.body.data).toHaveLength(1);
+
+    }, 10000);
 
 
 });

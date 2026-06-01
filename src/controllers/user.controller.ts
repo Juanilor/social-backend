@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 
 import { AuthRequest } from "../middlewares/auth.middleware";
 
-import { getUserProfile, toggleFollow } from "../services/user.service";
+import { getFollowers, getFollowing, getUserProfile, toggleFollow } from "../services/user.service";
 
 import { successResponse } from "../helpers/response.helper";
 
@@ -45,9 +45,40 @@ export const profile = async (
             user
         );
 
-    }catch(error){
+    } catch (error) {
         next(error);
     }
 
 
+}
+
+
+export const followers = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+
+    try {
+        const data = await getFollowers(req.params.id as string);
+
+        return successResponse(res, data);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const following = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+
+    try {
+        const data = await getFollowing(req.params.id as string);
+
+        return successResponse(res, data);
+    } catch (error) {
+        next(error);
+    }
 }
