@@ -7,7 +7,7 @@ export interface IUser extends Document {
     followers: mongoose.Types.ObjectId[],
     following: mongoose.Types.ObjectId[],
     createdAt: Date;
-    updateAt: Date;
+    updatedAt: Date;
 }
 
 const UserSchema = new Schema<IUser>({

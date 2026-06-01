@@ -1,4 +1,5 @@
 import Post from "../models/Post";
+import User from "../models/User";
 import { AppError } from "../utils/AppError";
 
 export const createPost = async (content: string, userId: string) => {
@@ -98,4 +99,41 @@ export const addComment = async (postId: string, userId: string, content: string
     const populatedPost = await Post.findById(post._id).populate("author", "username").populate("comments.user", "username");
 
     return populatedPost;
+}
+
+
+export const getFeed = async (userId: string, page: number, limit: number) => {
+
+    const user = await User.findById(userId);
+
+    if (!user) { throw new AppError("Usuario no encontrado", 404); }
+
+    const skip = (page - 1) + limit;
+
+    const authors = [
+        ...user.following,
+        user._id
+    ]
+
+    const posts = await Post.find({
+        author: {
+            $in: authors
+        }
+    }).populate("author", "username").sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+
+    const total = await Post.countDocuments({
+        author: {
+            $in: authors
+        }
+    })
+
+    return {
+        posts,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        totalPost: total,
+    }
+
+
 }

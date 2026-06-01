@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 interface IComments {
     user: mongoose.Types.ObjectId;
     content: string;
-    createAt?: Date;
+    createdAt?: Date;
 }
 export interface IPost extends Document {
 
