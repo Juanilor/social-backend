@@ -69,15 +69,12 @@ export const getUserProfile = async (userId: string) => {
 
 
     return {
-        success: true,
-        data: {
+
             ...user.toObject(),
-            followerCount: user.followers,
-            followingCount: user.following,
+            followerCount: user.followers.length,
+            followingCount: user.following.length,
             postCount
         }
-
-    }
 
 }
 

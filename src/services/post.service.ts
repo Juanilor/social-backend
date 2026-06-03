@@ -1,3 +1,4 @@
+import { log } from "node:console";
 import Post from "../models/Post";
 import User from "../models/User";
 import { AppError } from "../utils/AppError";
@@ -108,18 +109,20 @@ export const getFeed = async (userId: string, page: number, limit: number) => {
 
     if (!user) { throw new AppError("Usuario no encontrado", 404); }
 
-    const skip = (page - 1) + limit;
+    const skip = (page - 1) * limit;
 
     const authors = [
         ...user.following,
         user._id
     ]
 
+    log(user.following)
+
     const posts = await Post.find({
         author: {
             $in: authors
         }
-    }).populate("author", "username").sort({ createdAt: -1 }).skip(skip).limit(limit);
+    }).populate("author", "username email").populate("comments.user", "username").sort({ createdAt: -1 }).skip(skip).limit(limit);
 
 
     const total = await Post.countDocuments({

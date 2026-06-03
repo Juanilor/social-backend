@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
+import { log } from "node:console";
 
 
 describe("User Routes", () => {
@@ -77,7 +78,7 @@ describe("User Routes", () => {
 
         const response = await request(app).get(`/api/users/${user.user._id}`);
 
-        const data = response.body.data.data;
+        const data = response.body.data;
 
         expect(response.status).toBe(200);
 
@@ -98,7 +99,7 @@ describe("User Routes", () => {
 
         expect(response.status).toBe(200);
 
-        expect(response.body.data).toHaveLength(1);
+        expect(response.body.data.followers).toHaveLength(1);
 
     }, 10000);
 
@@ -113,7 +114,7 @@ describe("User Routes", () => {
 
         expect(response.status).toBe(200);
 
-        expect(response.body.data).toHaveLength(1);
+        expect(response.body.data.following).toHaveLength(1);
 
     }, 10000);
 

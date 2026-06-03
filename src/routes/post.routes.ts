@@ -3,6 +3,7 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 import {
     commentPostController,
     createPostController,
+    feed,
     getAllPostsController,
     likePostController,
 
@@ -39,6 +40,33 @@ const router = Router();
  *         description: Post creado con exito.
  */
 router.post('/', authMiddleware, createPostValidator, validate, createPostController);
+
+/**
+ * @swagger
+ * /api/posts/feed:
+ *   get:
+ *     summary: Obtener feed personalizado
+ *     tags:
+ *       - Posts
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Feed obtenido correctamente
+ *       401:
+ *         description: No autorizado
+ */
+
+router.get("/feed", authMiddleware, feed);
 
 /**
  * @swagger

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthRequest } from "../middlewares/auth.middleware";
-import { createPost, getAllPosts, toggleLike, deletePost, addComment } from "../services/post.service";
+import { createPost, getAllPosts, toggleLike, deletePost, addComment, getFeed } from "../services/post.service";
 import { successResponse } from "../helpers/response.helper";
 
 export const createPostController = async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -78,3 +78,32 @@ export const commentPostController = async (req: AuthRequest, res: Response, nex
         next(error);
     }
 }
+
+
+export const feed = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
+
+    try {
+
+        const page = Number(req.query.page) || 1;
+
+        const limit = Number(req.query.limit) || 10;
+
+        const posts = await getFeed(
+            req.user.id,
+            page,
+            limit
+        );
+
+        return successResponse(
+            res,
+            posts
+        );
+
+    } catch (error) {
+        next(error);
+    };
+};
