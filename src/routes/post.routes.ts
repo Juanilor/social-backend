@@ -55,10 +55,12 @@ router.post('/', authMiddleware, createPostValidator, validate, createPostContro
  *         name: page
  *         schema:
  *           type: integer
+ *         required: false
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
+ *         required: false
  *     responses:
  *       200:
  *         description: Feed obtenido correctamente

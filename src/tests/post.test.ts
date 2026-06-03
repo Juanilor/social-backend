@@ -2,6 +2,7 @@ import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
 
+
 describe("Post Routes", () => {
 
     it("Should create a new post", async () => {
@@ -109,5 +110,6 @@ describe("Post Routes", () => {
 
 
     }, 10000);
+
 
 });
