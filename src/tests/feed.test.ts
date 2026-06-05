@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
+import { log } from "node:console";
 
 describe("Feed Routes", () => {
 
@@ -24,4 +25,40 @@ describe("Feed Routes", () => {
 
     }, 10000);
 
+
+    it("Should return empty feed", async () => {
+
+        const user = await createAndLoginUser();
+
+
+        const response = await request(app).get("/api/posts/feed").set('Authorization', `Bearer ${user.token}`);
+
+
+        expect(response.status).toBe(200);
+
+        expect(response.body.data.posts).toHaveLength(0);
+
+    }, 10000)
+
+
+
+    it("Should paginate feed posts", async () => {
+
+        const user = await createAndLoginUser();
+
+        for (let i = 0; i < 10; i++) {
+            await request(app).post('/api/posts').set("Authorization", `Bearer ${user.token}`).send({ content: `Pagination feed Test, post ${i}` });
+        }
+
+        const response = await request(app).get('/api/posts/feed?page=1&limit=2').set("Authorization", `Bearer ${user.token}`);
+
+        log(response)
+
+        expect(response.status).toBe(200);
+
+        expect(response.body.data.posts).toHaveLength(2);
+        expect(response.body.data).toHaveProperty("totalPages");
+        expect(response.body.data.totalPages).toBe(5);
+
+    }, 10000);
 })
