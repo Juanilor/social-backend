@@ -1,5 +1,5 @@
-import Post from "../models/Post";
-import User from "../models/User";
+import { countPostsByAuthor } from "../repositories/post.repository";
+import { findUserById, findUserByIdAndPopulate, findUserByIdWithoutPassword, saveUser } from "../repositories/user.repository";
 
 import { AppError } from "../utils/AppError";
 
@@ -15,9 +15,9 @@ export const toggleFollow = async (
         );
     };
 
-    const currentUser = await User.findById(currentUserId);
+    const currentUser = await findUserById(currentUserId);
 
-    const targetUser = await User.findById(targetUserId);
+    const targetUser = await findUserById(targetUserId);
 
     if (!currentUser || !targetUser) {
         throw new AppError(
@@ -41,8 +41,8 @@ export const toggleFollow = async (
 
     }
 
-    await currentUser.save();
-    await targetUser.save();
+    await saveUser(currentUser);
+    await saveUser(targetUser);
 
     return {
         following: !alreadyFollowing,
@@ -56,32 +56,28 @@ export const toggleFollow = async (
 export const getUserProfile = async (userId: string) => {
 
 
-    const user = await User.findById(userId).select('-password');
+    const user = await findUserByIdWithoutPassword(userId);
 
     if (!user) {
         throw new AppError("Usuario no disponible.", 404);
     }
 
 
-    const postCount = await Post.countDocuments({
-        author: userId,
-    });
+    const postCount = await countPostsByAuthor(userId);
 
 
     return {
-
-            ...user.toObject(),
-            followerCount: user.followers.length,
-            followingCount: user.following.length,
-            postCount
-        }
+        ...user.toObject(),
+        followerCount: user.followers.length,
+        followingCount: user.following.length,
+        postCount
+    }
 
 }
 
 export const getFollowers = async (userId: string) => {
 
-    const user = await User.findById(userId).populate("followers", "username email");
-
+    const user = await findUserByIdAndPopulate(userId, 'followers', 'username email');
 
     if (!user) {
         throw new AppError("Usuario no encontrado", 404);
@@ -96,8 +92,7 @@ export const getFollowers = async (userId: string) => {
 
 export const getFollowing = async (userId: string) => {
 
-    const user = await User.findById(userId).populate("following", "username email");
-
+    const user = await findUserByIdAndPopulate(userId, 'following', 'username email');
 
     if (!user) {
         throw new AppError("Usuario no encontrado", 404);
