@@ -1,4 +1,3 @@
-import { log } from "node:console";
 import Post from "../models/Post";
 import User from "../models/User";
 import { AppError } from "../utils/AppError";
@@ -115,8 +114,6 @@ export const getFeed = async (userId: string, page: number, limit: number) => {
         ...user.following,
         user._id
     ]
-
-    log(user.following)
 
     const posts = await Post.find({
         author: {

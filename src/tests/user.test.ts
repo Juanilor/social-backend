@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
-import { log } from "node:console";
 
 
 describe("User Routes", () => {

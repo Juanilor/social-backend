@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../app";
 import { createAndLoginUser } from "./helpers/auth.helper";
-import { log } from "node:console";
 
 describe("Feed Routes", () => {
 
@@ -22,6 +21,8 @@ describe("Feed Routes", () => {
         expect(feedResponse.body.data.posts).toHaveLength(1);
 
         expect(feedResponse.body.data.posts[0].content).toBe("FEED TEST POST");
+
+        expect(feedResponse.body.data.posts[0].author._id).toBe(user2.user._id)
 
     }, 10000);
 
@@ -51,8 +52,6 @@ describe("Feed Routes", () => {
         }
 
         const response = await request(app).get('/api/posts/feed?page=1&limit=2').set("Authorization", `Bearer ${user.token}`);
-
-        log(response)
 
         expect(response.status).toBe(200);
 

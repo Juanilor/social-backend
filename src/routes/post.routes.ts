@@ -6,8 +6,7 @@ import {
     feed,
     getAllPostsController,
     likePostController,
-
-    removePostController
+    removePostController,
 } from "../controllers/post.controller";
 import { commentPostValidator, createPostValidator } from "../validators/post.validator";
 import { validate } from "../middlewares/validation.middleware";
